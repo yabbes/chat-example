@@ -1,20 +1,47 @@
 <% include ../partials/header %>
-<! — jQuery (necessary for Bootstrap’s JavaScript plugins) →
-<script src=”https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<! — Bootstrap javascript file →
-<script src=”https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
 </script>
+  <div class="container">
+    <h1> <%= title %> </h1>
 
-  <h1> <%= title %> </h1>
+    <h2>This is our <strong>Chat application</strong></h2>
+    <div class="row">
+      <div class="col-md-12 mainchat">
+        <ul id="messages" class="col-md-12"></ul>
+        <div class="input-group">
+          <form action="">
+              <input class="form-control" id="m"  type="text" autocomplete="off" /><button>Send</button>
+          </form>
+        </div>
 
-  <h1>This is our Chat application</h1>
+      </div>
 
-  <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
+    </div>
+
+
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      $(function () {
+        var socket = io();
+        $('form').submit(function(){
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('');
+          return false;
+        });
+        socket.on('chat message', function(msg){
+          $('#messages').append($('<li>').text(msg));
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+      });
+    </script>
+
+
+  </div>
+
 
 <% include ../partials/footer %>
